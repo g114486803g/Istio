@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: test-virtualservice
+  namespace: ready-live
+spec:
+  hosts: 
+  - http-all
+  http:
+  - route:
+    - destination:
+        host: http-all
+        subset: v1
+      weight: 100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: test-destinationrule
+  namespace: ready-live
+spec:
+  host: http-all
+  subsets:
+  - name: v1
+    labels:
+      server: http-v1
+  - name: v2
+    labels:
+      server: http-v2
+

@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: test-virtualservice
+  namespace: ready-live
+spec:
+  hosts:
+    - http-all
+  http:
+  - route:
+    - destination:
+        host: http-all
+        subset: v2
+      weight: 100
+    mirror:
+      host: http-all
+      subset: v1
+      
+    #mirror_percent: 100
+
