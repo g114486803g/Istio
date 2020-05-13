@@ -1,0 +1,35 @@
+
+官方文档
+https://istio.io/zh/docs
+
+不安装grafana
+istioctl manifest apply --set profile=demo --set addonComponents.grafana.enabled=false 
+
+[root@master-199 istio]# kubectl get pods -n istio-system 
+NAME                                    READY   STATUS    RESTARTS   AGE
+istio-egressgateway-557dcf8d8-gt5xv     1/1     Running   0          6d1h
+istio-ingressgateway-6489d9556d-lh4z7   1/1     Running   0          6d1h
+istio-tracing-9dd6c4f7c-m5vf5           1/1     Running   0          6d1h
+istiod-774777b79-ltkw7                  1/1     Running   0          6d1h
+kiali-869c6894c5-zndv8                  1/1     Running   0          3d22h
+prometheus-dfd976959-gv54b              2/2     Running   0          6d1h
+
+
+映射端口
+kubectl patch svc -n istio-system kiali -p '{"spec": {"type": "NodePort"}}'
+
+映射端口
+kubectl patch svc -n istio-system jaeger-query -p '{"spec": {"type": "NodePort"}}'
+
+创建命名空间
+kubectl create ns ready-live
+
+自定注入
+kubectl label namespaces ready-live istio-injection=enabled
+
+kubectl get ns ready-live --show-labels
+
+
+添加table键
+source  istio-1.5.2/tools/istioctl.bash 
+--------------------------------------------------------------------------
