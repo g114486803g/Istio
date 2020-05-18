@@ -36,4 +36,22 @@ istio-ingressgateway        NodePort    10.108.9.77      <none>        15020:305
  istioctl manifest apply --set profile=demo
 
 --------------------
+istio kiali jaeger 关联
+
+ 编辑 kiali configmap 后，需要删除并重新生成 kiali pod，好让配置挂载生效，
+ kubectl delete pod -n istio-system $(kubectl get pod -n istio-system | grep -i kiali | awk '{print $1}')
+
+查看已生效
+kubectl exec -it -n istio-system kiali-869c6894c5-f4sbp -- cat /kiali-configuration/config.yaml
+server:
+  port: 20001
+  web_root: /kiali
+external_services:
+  istio:
+    url_service_version: http://istio-pilot.istio-system:8080/version
+  tracing:
+  url: http://10.96.2.223:16686/jaeger 
+  url: 
+
+https://blog.51cto.com/14268033/2488805
 
