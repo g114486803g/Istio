@@ -1,0 +1,39 @@
+命名空间开启自动注入
+kubectl label namespaces prod istio-injection=enabled
+
+
+ kubectl patch svc kiall  -p '{"spec": {"type": "NodePort"}}'
+
+
+kubectl get svc istio-ingressgateway -n istio-system
+------------------------
+将lb设置成noedport
+ istio-ingressgateway        LoadBalancer   10.108.9.77      <pending>     15020:30576/TCP,80:30608/TCP,443:31896/TCP,15029:31321/TCP,15030:30313/TCP,15031:31228/TCP,15032:31688/TCP,31400:31105/TCP,15443:30299/TCP   7d18h
+
+
+ kubectl patch svc istio-ingressgateway -n istio-system  -p '{"spec": {"type": "NodePort"}}'
+
+
+ kubectl patch svc istio-ingressgateway -n istio-system  -p '{"spec": {"type": "LoadBalancer"}}'
+
+----------------------------
+[root@master-199 kail]# kubectl get svc -n istio-system 
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                                                                                                                                      AGE
+istio-egressgateway         ClusterIP   10.109.229.59    <none>        80/TCP,443/TCP,15443/TCP                                                                                                                     7d18h
+istio-ingressgateway        NodePort    10.108.9.77      <none>        15020:30576/TCP,80:30608/TCP,443:31896/TCP,15029:31321/TCP,15030:30313/TCP,15031:31228/TCP,15032:31688/TCP,31400:31105/TCP,15443:30299/TCP   7d18h
+
+
+
+
+ kubectl edit pod -n istio-system $(kubectl get pods -n istio-system | grep -i kiali | awk '{print $1}')
+ kubectl get svc istio-ingressgateway -n istio-system
+
+ kubectl -n istio-system get svc istio-ingressgateway -o jsonpath='{.spec.ports[0].nodePort}'
+ kubectl -n istio-system get svc istio-ingressgateway
+
+
+重置配置configuse
+ istioctl manifest apply --set profile=demo
+
+--------------------
+
