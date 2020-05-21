@@ -1,0 +1,40 @@
+
+kubectl label namespaces prod istio-injection=enabled
+
+
+123qwe
+
+kubectl patch svc zipkin -n istio-system  -p '{"spec": {"type": "ClusterIP"}}'
+
+
+kubectl get svc istio-ingressgateway -n istio-system
+
+
+kubectl delete pods entpr-depart-srv-test-56fdb9bb7b-lr22m
+
+ kubectl edit svc grafana -n istio-system
+
+修改前
+ ports:
+  - name: http-query
+    port: 9411
+    protocol: TCP
+    targetPort: 9411
+  selector:
+    app: jaeger
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
+
+
+修改后
+ - name: http-query
+    nodePort: 33333      <<<<---------增加端口
+    port: 9411
+    protocol: TCP
+    targetPort: 9411
+  selector:
+    app: jaeger
+  sessionAffinity: None
+  type: NodePort     <<<<-----端口类型
