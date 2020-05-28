@@ -33,3 +33,7 @@ kubectl get ns ready-live --show-labels
 添加table键
 source  istio-1.5.2/tools/istioctl.bash 
 --------------------------------------------------------------------------
+
+当删除插件重新安装插件不安装grafana
+
+istioctl manifest apply --set profile=demo --set addonComponents.grafana.enabled=false
